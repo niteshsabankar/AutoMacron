@@ -1,4 +1,4 @@
-Keystroke “Hello world” example for what we'll be doing a lot of.
+// Keystroke “Hello world” example for what we'll be doing a lot of.
 
 
 //
