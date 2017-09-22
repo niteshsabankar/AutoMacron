@@ -1,6 +1,8 @@
 #ifndef RECORDMACRO_H
 #define RECORDMACRO_H
 
+#include <Macro.h>
+
 class RecordMacro : public Macro
 {
 	public:
