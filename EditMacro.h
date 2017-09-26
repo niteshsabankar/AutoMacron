@@ -6,8 +6,11 @@
 class EditMacro : public Macro
 {
 	public:
-		vector<int> saveMacro();
+		void saveMacro();
 		void loadMacro(string);
-		void recordSingle();
-		void record();
+		void recordSingle(int);
+		void record(int);
+		void pause();
+		void resume();
+		
 };
