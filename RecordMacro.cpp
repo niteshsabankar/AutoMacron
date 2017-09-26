@@ -26,3 +26,13 @@ RecordMacro::saveMacro()
 	//file << actions[i]
 	//file << ',' or ' ';
 }
+
+RecordMacro::pause()
+{
+	
+}
+
+RecordMacro::resume()
+{
+	
+}
