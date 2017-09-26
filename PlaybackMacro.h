@@ -4,10 +4,12 @@
 class PlaybackMacro : public Macro
 {
 	public:
+		PlaybackMacro(string);
 		void loadMacro(string);
-		void actionLoop(vector<int>);
+		void actionLoop();
 
 };
 
 #endif // !PLAYBACKMACRO_H
+
 
