@@ -1,13 +1,14 @@
 #ifndef RECORDMACRO_H
 #define RECORDMACRO_H
 
-#include <Macro.h>
+#include "Macro.h"
 
 class RecordMacro : public Macro
 {
 	public:
-		void recordMacro();
-		vector<int> saveMacro();
+		RecordMacro(string);
+		void recordMacro(int);
+		void saveMacro();
 		void pause();
 		void resume();
 };
