@@ -7,6 +7,7 @@
 
 using namespace std;
 
+//base macro class to be used by the others.
 class Macro
 {
 	protected:
