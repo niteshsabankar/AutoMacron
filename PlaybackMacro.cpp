@@ -1,5 +1,9 @@
 #include "PlaybackMacro.h"
 
+void PlaybackMacro::PlaybackMacro(string load_me)
+{
+	loadMacro(load_me);
+}
 void PlaybackMacro::actionLoop()
 {
 	//do all of the recorded things.
