@@ -36,3 +36,99 @@ RecordMacro::resume()
 {
 	
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#include <Windows.h>
+#include <stdio.h>
+#include <iostream>
+using namespace std;
+
+const int MacroMaxLen = 100;
+
+struct Macro
+{
+	int SleepTime;						//How long to wait 
+	int SleepTimeBeforeClick;				//How long to wait before click
+	int MacroIndex;						//Position in Array
+	POINT CursorPosition[MacroMaxLen];			//Array that holds x,y position of cursor
+};
+
+void MouseLeftClick()
+{
+	INPUT Input = { 0 };					//
+	Input.type = INPUT_MOUSE;				//
+	Input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;		//
+	SendInput(1, &Input, sizeof(INPUT));			//
+
+	ZeroMemory(&Input, sizeof(INPUT));			//
+	Input.type = INPUT_MOUSE;				//
+	Input.mi.dwFlags = MOUSEEVENTF_LEFTUP;			//
+	SendInput(1, &Input, sizeof(INPUT));			//
+}
+
+void IsertNewMacroPos(Macro* macro)
+{
+	if (macro->MacroIndex + 1 < MacroMaxLen)
+		{
+		macro->MacroIndex++;
+		GetCursorPos(&macro->CursorPosition[macro->MacroIndex]);
+		cout << "New Macro Inserted" << endl;
+		}
+}
+
+void ExecuteMacro(Macro* macro)
+{
+	for (int i = 0; i < macro->MacroIndex + 1; i++)
+	{
+		SetCursorPos(macro->CursorPosition[i].x, macro->CursorPosition[i].y);
+		Sleep(macro->SleepTimeBeforeClick);	
+		MouseLeftClick();
+		Sleep(macro->SleepTime);
+	}
+}
+
+Macro CreateNewMacro(int sleepbeforeclick, int sleep)
+{
+	Macro macro;
+	macro.SleepTime = sleep;
+	macro.SleepTimeBeforeClick = sleepbeforeclick;
+	macro.MacroIndex = -1;
+	return macro;
+
+}
+
+
+int main()
+{
+	bool macroInsertDone = true;
+	bool macroExecuteDone = true;
+
+	Macro m = CreateNewMacro(50, 50);
+
+	while (true)
+	{
+		//Set new macro position
+		if (GetAsyncKeyState('Z'))
+			macroInsertDone = false;
+		else if (!GetAsyncKeyState('Z'))
+		{
+			if (!macroInsertDone)
+				IsertNewMacroPos(&m);
+			macroInsertDone = true;	
+		}
+		//Execute macro
+		if (GetAsyncKeyState('X'))
+			macroExecuteDone = false;
+		else if (!GetAsyncKeyState('X'))
+		{
+			if (!macroExecuteDone)
+				ExecuteMacro(&m);
+			macroExecuteDone = true;
+		}
+		Sleep(5);
+	}
+
+
+
+	return 0;
+}
