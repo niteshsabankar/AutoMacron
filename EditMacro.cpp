@@ -56,3 +56,26 @@ void EditMacro::resume()
 	//will resume if paused...probably the pause break button
 
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+EditMacro::EditMacro()
+{
+	ofstream myfile;
+	string macro_name;
+	string input;
+	char chars;
+
+	cout << "Please enter macro name to edit: ";
+	getline(cin, macro_name);
+	myfile.open(macro_name, std::ios_base::app);
+
+	cout << "write to the macro: ";
+	getline(cin, input);
+	myfile << input << endl;
+	
+	myfile.close();
+	system("pause");
+	return 0;
+}
+
