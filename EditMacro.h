@@ -7,7 +7,7 @@ class EditMacro : public Macro
 {
 	public:
 		void saveMacro();
-		void loadMacro(string);
+		void loadMacro(wstring);
 		void recordSingle(int);
 		void record(int);
 		void pause();
