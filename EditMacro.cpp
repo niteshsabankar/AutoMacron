@@ -1,6 +1,6 @@
 #include "EditMacro.h"
 
-EditMacro::EditMacro(string file_name)
+EditMacro::EditMacro(wstring file_name)
 {
 	loadMacro(file_name);
 }
@@ -21,7 +21,7 @@ EditMacro::saveMacro()
 	//file << ',';
 }
 
-void EditMacro::loadMacro(string file_name)
+void EditMacro::loadMacro(wstring file_name)
 {
 	//open a file in read mode
 	//read an integer with >>, place it in the actions vector
