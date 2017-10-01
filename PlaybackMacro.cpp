@@ -1,49 +1,87 @@
+//===============================================================
+//NAME: Omar Gonzalez Martinez
+//Date: 10/1/17
+//Complier:
+//File type: PlaybackMarcro implementaion file
+//===============================================================
+#include "stdafx.h"
 #include "PlaybackMacro.h"
 
-void PlaybackMacro::PlaybackMacro(string load_me)
+//PURPOSE: Constructor initialize
+//PARAMETER: wstring varible is the name of the file being loaded
+//AlGORITHM: Use LoadMacro() function
+PlaybackMacro::PlaybackMacro(wstring load_me)
 {
-	loadMacro(load_me);
+    loadMacro(load_me);
 }
+
+//PURPOSE:
+//PARAMETER:
+//AlGORITHM:
 void PlaybackMacro::actionLoop()
 {
-	if (NULL == p)
-	{return;}
-
-	while (*p)
-	{
-	printf("%c\xDB", *p++);     // %c , *p++type one char at a time
-									//\xDB cursor sim
-	::Sleep(60);                // minal secs.
-	printf("\b \b");            // cursor blink \b moves cursor one space pback  then space move cirsor back 
-	::Sleep(60);
-	}
-	
-	::Sleep(300); 
-	//do all of the recorded things.
-	//go through the vector, perform actions and sleep for delays
-
+    int code;
+    INPUT key;
+    
+    ::Sleep(5000);
+    
+    while (!actions.empty())
+    {
+        code = actions.front();
+        actions.pop_back();
+        
+        key.type = INPUT_KEYBOARD;
+        key.ki.wScan = 0;
+        key.ki.time = 0;
+        key.ki.dwExtraInfo = 0;
+        
+        key.ki.wVk = code;
+        key.ki.dwFlags = 0;
+        SendInput(1, &key, sizeof(INPUT));
+        
+        key.ki.dwFlags = KEYEVENTF_KEYUP;
+        SendInput(1, &key, sizeof(INPUT));
+    }
 }
 
-void PlaybackMacro::loadMacro(string name)
+//PURPOSE:
+//PARAMETER:
+//AlGORITHM:
+void PlaybackMacro::loadMacro(wstring name)
 {
-	char start;
-	printf("PlayBack:         ");
-	cin >> start;
-
-	if (start == 'p' || start == 'P')
-	{
-		printf("\nBeginning playback\n");
-		::Sleep(3000);
-
-		const char* tmp = name.c_str();
-		actionLoop(tmp);
-	}
-	else
-	{
-		printf("Exiting...");
-		::Sleep(3000);
-	}
-	//SHARED WITH EDITMACRO!!!!
-	//look for file named name + ".mcr" in \macros\
-	//load and ask user to start (or press start macro button on the GUI when it's a GUI.)
+    fstream file;
+    file.open(name);
+    
+    if (!file)
+    {
+        wcout << name << " File not found" << endl;
+        exit(1);
+    }
+    else
+    {
+        string context;
+        string tmp_hex;
+        int num;
+        
+        file >> context;
+        
+        for (int i = 0; i < context.length(); i++)
+        {
+            if (context[i] != ',')
+            {
+                tmp_hex += context[i];
+            }
+            else if(context[i] == ',')
+            {        
+                const char* hex = tmp_hex.c_str();
+                num = (int)strtol(hex, NULL, 16);       // number base 16
+                
+                actions.push_back(num);
+                tmp_hex = "\0";
+            }
+        }
+        file.close();
+        
+        actionLoop();	
+    }
 }
