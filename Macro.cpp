@@ -1300,6 +1300,9 @@ Macro::displayMacro()
           dummy = dummy + "down";
         tVec.push_back(dummy);
         break;
+      default:
+	dummy = "Undefined";
+    	tVec.push_back(dummy);
       }
     }
   }
