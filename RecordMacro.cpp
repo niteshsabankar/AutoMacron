@@ -8,6 +8,49 @@ RecordMacro::RecordMacro(string name)
 
 vector<int> RecordMacro::recordMacro(int mode)
 {
+///////////////////////////////////////////////////////////Keyboard/////////////////////////////////////////////////////////////////////	
+	if(mode==1)
+	{	
+		int delay = 0;
+		time_t end = 0; 
+			while (true)
+			{
+				for (int key = 8; key <= 255; key++)
+				{
+					if (GetAsyncKeyState(key) == -32767)
+					{		
+					time_t start = time(0);
+					actions.push_back(key);
+					delay = start-end;
+					cout << key << " " << delay << endl;
+					actions.push_back(delay);
+					end = time(0);
+					}
+				}
+			}
+	}
+	
+	else if(mode==2)
+	{	
+		while (true)
+		{
+			for(int key=8; key<=255; key++)
+			{ 
+				if (GetAsyncKeyState(key) == -32767)
+				{	
+					actions.push_back(key);
+					actions.push_back(0);
+				}
+			}
+		}
+	}
+	
+	else
+		return 0;
+///////////////////////////////////////////////////////////////Mouse/////////////////////////////////////////////////////////////////////
+	
+	
+	
 	//NOTE: this code section is to be shared with the EditMacro file
 	//loop until scroll lock is hit VK_SCROLL/0x91
 	//if mode is 1, delays are recorded
@@ -20,6 +63,15 @@ vector<int> RecordMacro::recordMacro(int mode)
 
 RecordMacro::saveMacro()
 {
+	ofstream outputFile;
+	outputFile.open("macro_name ");
+
+	for (int i = 0; i < actions.size(); i++)
+	{
+		outputFile << actions[i] << " " << endl;
+	}
+	outputFile.close();
+	
 	//SHARED CODE FROM EDITMACRO
 	////open a file named \macros\macro_name in write mode
 	//for(int i =0; i < actions.size(); i++)
@@ -37,7 +89,7 @@ RecordMacro::resume()
 	
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////Initial example/////////////////////////////////////////////////////////////////////////
 #include <Windows.h>
 #include <stdio.h>
 #include <iostream>
