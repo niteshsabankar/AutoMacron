@@ -9,7 +9,7 @@ RecordMacro::RecordMacro(string name)
 vector<int> RecordMacro::recordMacro(int mode)
 {
 ///////////////////////////////////////////////////////////Keyboard/////////////////////////////////////////////////////////////////////	
-	if(mode==1)
+	if(mode==1)		//With Delays
 	{	
 		int delay = 0;
 		time_t end = 0; 
@@ -30,7 +30,7 @@ vector<int> RecordMacro::recordMacro(int mode)
 			}
 	}
 	
-	else if(mode==2)
+	else if(mode==2)	//No Delays
 	{	
 		while (true)
 		{
