@@ -23,10 +23,12 @@ void PlaybackMacro::actionLoop()
     int code;
     INPUT key;
     
+    reverse(actions.begin(), actions.end());
     ::Sleep(5000);
     
     while (!actions.empty())
     {
+        ::Sleep(500)
         code = actions.front();
         actions.pop_back();
         
