@@ -9,42 +9,72 @@ RecordMacro::RecordMacro(string name)
 vector<int> RecordMacro::recordMacro(int mode)
 {
 ///////////////////////////////////////////////////////////Keyboard/////////////////////////////////////////////////////////////////////	
-	if(mode==1)		//With Delays
+	bool flags[256];				//Flag for every key
+	int delay = 0;					//Time delay between key events
+	time_t end = time(0);				//
+	time_t start = time(0);				//
+
+	for (int i = 0; i < 255; i++)			//Set all flags to false
+	{
+		flags[i] = false;
+	}
+	
+	if(mode==1)					//With Delays
 	{	
-		int delay = 0;
-		time_t end = 0; 
-			while (true)
+		while (!flags[VK_SCROLL])								//Keep going until scroll key is pressed
+		{		
+			for (int key = 8; key <= 255; key++)
 			{
-				for (int key = 8; key <= 255; key++)
-				{
-					if (GetAsyncKeyState(key) == -32767)
-					{		
-					time_t start = time(0);
-					actions.push_back(key);
-					delay = start-end;
-					cout << key << " " << delay << endl;
+		
+				if (GetAsyncKeyState(key) == -32767 && flags[key] == false)		//If the key is pressed down and hasn't been flagged
+					{	
+					flags[key] = true;
+					start = time(0);
+					delay = start - end;
+					end = time(0);	
 					actions.push_back(delay);
+					actions.push_back(key);
+					cout << delay <<"\t"<< key << endl;
+			
+					}
+				else if (GetAsyncKeyState(key) == 0 && flags[key] == true)		//If the key is released after being flagged 
+					{
+					start = time(0);
+					delay = start - end;
+					actions.push_back(delay);
+					actions.push_back(key + 1000);
+					flags[key] = false;
+					cout << delay <<"\t"<< key+1000 << endl;
 					end = time(0);
 					}
-				}
-			}
-	}
-	
-	else if(mode==2)	//No Delays
-	{	
-		while (true)
-		{
-			for(int key=8; key<=255; key++)
-			{ 
-				if (GetAsyncKeyState(key) == -32767)
-				{	
-					actions.push_back(key);
-					actions.push_back(0);
-				}
-			}
+			}	
 		}
 	}
-	
+	else if(mode==2)	//No Delays
+	{
+		while (!flags[VK_SCROLL])								//Keep going until scroll key is pressed
+		{		
+			for (int key = 8; key <= 255; key++)
+			{
+		
+				if (GetAsyncKeyState(key) == -32767 && flags[key] == false)		//If the key is pressed down and hasn't been flagged
+					{	
+					flags[key] = true;
+					actions.push_back(delay);
+					actions.push_back(key);
+					cout << delay <<"\t"<< key << endl;
+			
+					}
+				else if (GetAsyncKeyState(key) == 0 && flags[key] == true)		//If the key is released after being flagged 
+					{
+					actions.push_back(delay);
+					actions.push_back(key + 1000);
+					flags[key] = false;
+					cout << delay <<"\t"<< key+1000 << endl;
+					}
+			}	
+		}	
+	}
 	else
 		return 0;
 ///////////////////////////////////////////////////////////////Mouse/////////////////////////////////////////////////////////////////////
@@ -68,7 +98,7 @@ RecordMacro::saveMacro()
 
 	for (int i = 0; i < actions.size(); i++)
 	{
-		outputFile << actions[i] << " " << endl;
+		outputFile << actions[i] << "," << endl;
 	}
 	outputFile.close();
 	
