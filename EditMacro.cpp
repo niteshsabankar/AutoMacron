@@ -99,8 +99,7 @@ void EditMacro::recordSingle(int mode, int delay)
 	//mode determines delays just as above.
 	//reuires argument delay from user 
 	
-		bool flags[256];				//Flag for every key
-	vector<int> actions;
+	bool flags[256];				//Flag for every key
 
 	for (int i = 0; i < 255; i++)			//Set all flags to false
 	{
