@@ -11,9 +11,10 @@ vector<int> RecordMacro::recordMacro(int mode)
 ///////////////////////////////////////////////////////////Keyboard/////////////////////////////////////////////////////////////////////	
 	bool flags[256];				//Flag for every key
 	int delay = 0;					//Time delay between key events
-	time_t end = time(0);				//
-	time_t start = time(0);				//
-
+	clock_t timer = clock());			//
+	clock_t timer2 = clock();			//
+	//int i=0;					//If you want no delay before first press
+	
 	for (int i = 0; i < 255; i++)			//Set all flags to false
 	{
 		flags[i] = false;
@@ -29,9 +30,15 @@ vector<int> RecordMacro::recordMacro(int mode)
 				if (GetAsyncKeyState(key) == -32767 && flags[key] == false)		//If the key is pressed down and hasn't been flagged
 					{	
 					flags[key] = true;
-					start = time(0);
-					delay = start - end;
-					end = time(0);	
+					timer = clock();
+					//if(i==0)
+					//{
+					//delay= 0;							//If you want no delay before first press
+					//}	
+					//else
+					delay = (int)((timer-timer2) / (CLOCKS_PER_SEC / 1000));
+					//i++;	
+					timer2 = clock();
 					actions.push_back(delay);
 					actions.push_back(key);
 					cout << delay <<"\t"<< key << endl;
@@ -39,13 +46,13 @@ vector<int> RecordMacro::recordMacro(int mode)
 					}
 				else if (GetAsyncKeyState(key) == 0 && flags[key] == true)		//If the key is released after being flagged 
 					{
-					start = time(0);
-					delay = start - end;
+					timer = clock();
+					delay = (int)((timer-timer2) / (CLOCKS_PER_SEC / 1000));
 					actions.push_back(delay);
 					actions.push_back(key + 1000);
 					flags[key] = false;
 					cout << delay <<"\t"<< key+1000 << endl;
-					end = time(0);
+					timer2 = clock();
 					}
 			}	
 		}
