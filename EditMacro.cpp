@@ -31,12 +31,32 @@ EditMacro::saveMacro()
 	
 }
 
-void EditMacro::loadMacro(wstring file_name)
+vector<int> EditMacro::loadMacro(wstring file_name)
 {
 	//open a file in read mode
 	//read an integer with >>, place it in the actions vector
 	//read a comma, do nothing
 	//repeat until eof
+	
+	ifstream infile;
+	infile.open(macro_name);
+	vector<int> holder;
+	int i;
+
+	string str((std::istreambuf_iterator<char>(infile)), std::istreambuf_iterator<char>());  // copy file contents in string
+	
+	stringstream ss(str);
+
+	while (ss >> i)
+	{
+		holder.push_back(i);
+
+		if (ss.peek() == ',')			// check for comma
+			ss.ignore();
+	}
+
+	infile.close();
+	return holder;
 }
 
 void EditMacro::record(int mode)
