@@ -13,25 +13,20 @@ EditMacro::EditMacro()
 	//macro_name = input
 }
 
-EditMacro::saveMacro()
+void RecordMacro::saveMacro()
 {
-	//open a file named \macros\macro_name in write mode
-	//for(int i =0; i < actions.size(); i++)
-	//file << actions[i]
-	//file << ',';
-	
 	ofstream outputFile;
-	outputFile.open("macro_name");
-
-	for (int i = 0; i < actions.size(); i++)
-	{
-		outputFile << actions[i] << " " << endl;
-	}
-	outputFile.close();
+	outputFile.open(macro_name.c_str());
 	
+	for (int i = 0; i < actions.size(); i++)
+		{
+			outputFile << to_string(actions[i]) << ",";
+		}
+
+	outputFile.close();
 }
 
-vector<int> EditMacro::loadMacro(wstring file_name)
+void EditMacro::loadMacro(wstring file_name)
 {
 	//open a file in read mode
 	//read an integer with >>, place it in the actions vector
@@ -39,8 +34,7 @@ vector<int> EditMacro::loadMacro(wstring file_name)
 	//repeat until eof
 	
 	ifstream infile;
-	infile.open(macro_name);
-	vector<int> holder;
+	infile.open(file_name);
 	int i;
 
 	string str((std::istreambuf_iterator<char>(infile)), std::istreambuf_iterator<char>());  // copy file contents in string
@@ -49,68 +43,98 @@ vector<int> EditMacro::loadMacro(wstring file_name)
 
 	while (ss >> i)
 	{
-		holder.push_back(i);
+		actions.push_back(i);
 
 		if (ss.peek() == ',')			// check for comma
 			ss.ignore();
 	}
 
 	infile.close();
-	return holder;
 }
 
-void EditMacro::record(int mode)
+void RecordMacro::recordMacro(int mode)
 {
-	//loop until scroll lock is hit VK_SCROLL/0x91
-	//if mode is 1, delays are recorded
-	//if mode is 2, delays are not recorded
-	//basically while it's waiting between keys, it will count the milliseconds
-	//with a native time function. once a key is pressed, it will record the delay
-	//and append it to the vector with push_back along with the new event;
-	//if in mode 2, push a 0 between each event into the vector.
-	
-///////////////////////////////////////////////////////////Keyboard/////////////////////////////////////////////////////////////////////	
-	if(mode==1)		//With Delays
-	{	
-		int delay = 0;
-		time_t end = 0; 
-			while (true)
+	///////////////////////////////////////////////////////////Keyboard/////////////////////////////////////////////////////////////////////	
+	bool flags[256];				//Flag for every key
+	int delay = 1;					//Time delay between key events
+	clock_t timer = clock();			//
+	clock_t timer2 = clock();
+
+	for (int i = 0; i < 255; i++)			//Set all flags to false
+	{ 
+		flags[i] = false;
+	}
+
+	if (mode == 1)					//With Delays
+	{
+		while (!flags[VK_SCROLL] && (!flags[VK_LSHIFT] && !flags[VK_END]))								//Keep going until scroll key is pressed
+		{
+			
+			
+			for (int key = 8; key <= 255; key++)
 			{
-				for (int key = 8; key <= 255; key++)
+
+				if (GetAsyncKeyState(key) == -32767 && flags[key] == false)		//If the key is pressed down and hasn't been flagged
 				{
-					if (GetAsyncKeyState(key) == -32767)
-					{		
-					time_t start = time(0);
-					actions.push_back(key);
-					delay = start-end;
-					cout << key << " " << delay << endl;
+					flags[key] = true;
+					timer = clock();
+					//if(i==0)
+					//{
+					//delay= 0;							//If you want no delay before first press
+					//}	
+					//else
+					delay = (int)((timer - timer2) / (CLOCKS_PER_SEC / 1000));
+					//i++;	
+					timer2 = clock();
 					actions.push_back(delay);
-					end = time(0);
-					}
+					actions.push_back(key);
+					cout << delay << "\t" << key << endl;
+
+				}
+				else if (GetAsyncKeyState(key) == 0 && flags[key] == true)		//If the key is released after being flagged 
+				{
+					timer = clock();
+					delay = (int)((timer - timer2) / (CLOCKS_PER_SEC / 1000));
+					actions.push_back(delay);
+					actions.push_back(key + 1000);
+					flags[key] = false;
+					timer2 = clock();
+					cout << delay << "\t" << key + 1000 << endl;
 				}
 			}
+		}
+			//system("CLS");
+			saveMacro();
+			
+
 	}
-	
-	else if(mode==2)	//No Delays
-	{	
-		while (true)
+
+	else if (mode == 2)	//No Delays
+	{
+		while (!flags[VK_SCROLL])								//Keep going until scroll key is pressed
 		{
-			for(int key=8; key<=255; key++)
-			{ 
-				if (GetAsyncKeyState(key) == -32767)
-				{	
+			for (int key = 8; key <= 255; key++)
+			{
+
+				if (GetAsyncKeyState(key) == -32767 && flags[key] == false)		//If the key is pressed down and hasn't been flagged
+				{
+					flags[key] = true;
+					actions.push_back(delay);
 					actions.push_back(key);
-					actions.push_back(0);
+				}
+				else if (GetAsyncKeyState(key) == 0 && flags[key] == true)		//If the key is released after being flagged 
+				{
+					actions.push_back(delay);
+					actions.push_back(key + 1000);
+					flags[key] = false;
+					cout << delay << "\t" << key + 1000 << endl;
 				}
 			}
 		}
 	}
-	
-	else
-		return 0;
-///////////////////////////////////////////////////////////////Mouse/////////////////////////////////////////////////////////////////////
-	
-	
+		cin.clear();
+		return;
+
 }
 
 void EditMacro::recordSingle(int mode, int delay)
@@ -191,26 +215,3 @@ void EditMacro::resume()
 	//will resume if paused...probably the pause break button
 
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-EditMacro::EditMacro()
-{
-	ofstream myfile;
-	string macro_name;
-	string input;
-	char chars;
-
-	cout << "Please enter macro name to edit: ";
-	getline(cin, macro_name);
-	myfile.open(macro_name, std::ios_base::app);
-
-	cout << "write to the macro: ";
-	getline(cin, input);
-	myfile << input << endl;
-	
-	myfile.close();
-	system("pause");
-	return 0;
-}
-
