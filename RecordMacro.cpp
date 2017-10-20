@@ -11,7 +11,7 @@ vector<int> RecordMacro::recordMacro(int mode)
 ///////////////////////////////////////////////////////////Keyboard/////////////////////////////////////////////////////////////////////	
 	bool flags[256];				//Flag for every key
 	int delay = 0;					//Time delay between key events
-	clock_t timer = clock());			//
+	clock_t timer = clock();			//
 	clock_t timer2 = clock();			//
 	//int i=0;					//If you want no delay before first press
 	
