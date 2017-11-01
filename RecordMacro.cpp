@@ -73,7 +73,7 @@ vector<int> RecordMacro::recordMacro(int mode)
 	}
 }
 
-void RecordMacro:: saveMacro()
+void RecordMacro::saveMacro()
 {
 	ofstream outputFile;
 	outputFile.open(macro_name.c_str());
