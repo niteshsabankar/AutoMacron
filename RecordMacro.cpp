@@ -118,7 +118,6 @@ void RecordMacro::mousePos()
 		{
 			delay += 20;
 		}
-
 	}
 }
 
