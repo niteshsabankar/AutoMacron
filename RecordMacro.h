@@ -8,6 +8,7 @@ class RecordMacro : public Macro
 	public:
 		RecordMacro(string);
 		void recordMacro(int);
+		void mousePos();
 		void saveMacro();
 		void pause();
 		void resume();
