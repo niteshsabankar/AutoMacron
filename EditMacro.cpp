@@ -52,25 +52,23 @@ void EditMacro::loadMacro(wstring file_name)
 	infile.close();
 }
 
-void RecordMacro::recordMacro(int mode)
+void RecordMacro::recordMacro(int mode, int vectIndex)
 {
-	///////////////////////////////////////////////////////////Keyboard/////////////////////////////////////////////////////////////////////	
 	bool flags[256];				//Flag for every key
-	int delay = 1;					//Time delay between key events
+	int delay = 0;					//Time delay between key events
 	clock_t timer = clock();			//
-	clock_t timer2 = clock();
+	clock_t timer2 = clock();			//
 
 	for (int i = 0; i < 255; i++)			//Set all flags to false
-	{ 
+	{
 		flags[i] = false;
 	}
 
-	if (mode == 1)					//With Delays
 	{
-		while (!flags[VK_SCROLL] && (!flags[VK_LSHIFT] && !flags[VK_END]))								//Keep going until scroll key is pressed
+		while (!flags[VK_PRIOR])								//Keep going until scroll key is pressed
 		{
-			
-			
+			if (clock() % 20 >= 0 && clock() % 20 <= 3)
+			//	mousePos();
 			for (int key = 8; key <= 255; key++)
 			{
 
@@ -78,65 +76,47 @@ void RecordMacro::recordMacro(int mode)
 				{
 					flags[key] = true;
 					timer = clock();
-					//if(i==0)
-					//{
-					//delay= 0;							//If you want no delay before first press
-					//}	
-					//else
+					if (mode == 0)                                                  //Record without delays
+					{
+						delay = 0;
+					}
+					else
+					{
+						delay = (int)(timer - timer2);
+					}
 					delay = (int)((timer - timer2) / (CLOCKS_PER_SEC / 1000));
-					//i++;	
 					timer2 = clock();
-					actions.push_back(delay);
-					actions.push_back(key);
+					actions.insert(actions.begin() + vectIndex, delay);
+					vectIndex++;
+					actions.insert(actions.begin() + vectIndex, key);
+					vectIndex++;
 					cout << delay << "\t" << key << endl;
 
 				}
 				else if (GetAsyncKeyState(key) == 0 && flags[key] == true)		//If the key is released after being flagged 
 				{
 					timer = clock();
+					if (mode == 0)
+					{
+						delay = 0;
+					}
+					else
+					{
+						delay = (int)(timer - timer2);
+					}
 					delay = (int)((timer - timer2) / (CLOCKS_PER_SEC / 1000));
-					actions.push_back(delay);
-					actions.push_back(key + 1000);
+					actions.insert(actions.begin() + vectIndex, delay);
+					vectIndex++;
+					actions.insert(actions.begin() + vectIndex, key + 1000);
+					vectIndex++;
 					flags[key] = false;
+					cout << delay << "\t" << key + 1000 << endl;
 					timer2 = clock();
-					cout << delay << "\t" << key + 1000 << endl;
-				}
-			}
-		}
-			//system("CLS");
-			saveMacro();
-			
-
-	}
-
-	else if (mode == 2)	//No Delays
-	{
-		while (!flags[VK_SCROLL])								//Keep going until scroll key is pressed
-		{
-			for (int key = 8; key <= 255; key++)
-			{
-
-				if (GetAsyncKeyState(key) == -32767 && flags[key] == false)		//If the key is pressed down and hasn't been flagged
-				{
-					flags[key] = true;
-					actions.push_back(delay);
-					actions.push_back(key);
-				}
-				else if (GetAsyncKeyState(key) == 0 && flags[key] == true)		//If the key is released after being flagged 
-				{
-					actions.push_back(delay);
-					actions.push_back(key + 1000);
-					flags[key] = false;
-					cout << delay << "\t" << key + 1000 << endl;
 				}
 			}
 		}
 	}
-		cin.clear();
-		return;
-
 }
-
 void EditMacro::recordSingle(int mode, int delay)
 {
 	//record a single key down key up. append to actions vector
