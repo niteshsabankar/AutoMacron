@@ -7,12 +7,18 @@
 
 using namespace std;
 
+struct MousePos 
+{
+	POINT position; 
+	int mdelay;
+};
 //base macro class to be used by the others.
 class Macro
 {
 	protected:
 		vector<int> actions;
 		string macro_name;
+		vector<MousePos> mActions;
 
 	public:
 		void displayMacro();
