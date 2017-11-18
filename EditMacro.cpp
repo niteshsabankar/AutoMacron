@@ -117,72 +117,58 @@ void RecordMacro::recordMacro(int mode, int vectIndex)
 		}
 	}
 }
-void EditMacro::recordSingle(int mode, int delay)
+void EditMacro::recordSingle(int mode, int delay, int vectIndex)
 {
 	//record a single key down key up. append to actions vector
 	//mode determines delays just as above.
-	//reuires argument delay from user 
-	
-	bool flags[256];				//Flag for every key
+	//reuires 3 argument: mode, delay, and vectorIndex where action to be inserted
+	bool flags[256];						//Flag for every key
 
 	for (int i = 0; i < 255; i++)			//Set all flags to false
 	{
 		flags[i] = false;
 	}
 
-	if (mode == 1)					//With Delays
 	{
-		while (!_kbhit())								//Wait for single keystroke, requires <conio.h>
+		while (!flags[VK_PRIOR])							//Wait for single keystroke, requires <conio.h>
 		{
-			for (int key = 8; key <= 255; key++)
+			if (_kbhit())
 			{
-
-				if (GetAsyncKeyState(key) == -32767 && flags[key] == false)		//If the key is pressed down and hasn't been flagged
+				for (int key = 8; key <= 255; key++)
 				{
-					flags[key] = true;
-					actions.push_back(delay);
-					actions.push_back(key);
-					cout << "delay = " << delay << "\t" << "key = " << key << endl;
 
+					if (GetAsyncKeyState(key) == -32767 && flags[key] == false)		//If the key is pressed down and hasn't been flagged
+					{
+						flags[key] = true;
+						if (mode == 0)                                                  //Record without delays
+						{
+							delay = 0;
+						}
+						actions.insert(actions.begin() + vectIndex, delay);
+						vectIndex++;
+						actions.insert(actions.begin() + vectIndex, key);
+						vectIndex++;
+						cout << delay << "\t" << key << endl;
+
+					}
+					else if (GetAsyncKeyState(key) == 0 && flags[key] == true)		//If the key is released after being flagged 
+					{
+						if (mode == 0)
+						{
+							delay = 0;
+						}
+						actions.insert(actions.begin() + vectIndex, delay);
+						vectIndex++;
+						actions.insert(actions.begin() + vectIndex, key + 1000);
+						vectIndex++;
+						flags[key] = false;
+						cout << delay << "\t" << key + 1000 << endl;
+					}
 				}
-				else if (GetAsyncKeyState(key) == 0 && flags[key] == true)		//If the key is released after being flagged 
-				{
-					actions.push_back(delay);
-					actions.push_back(key + 1000);
-					flags[key] = false;
-					cout << "delay = " << delay << "\t" << "key = " << key + 1000 << endl;
-				}
+				break;
 			}
 		}
 	}
-	else if (mode == 2)	//No Delays
-	{
-		delay = 0;
-		while (!_kbhit())								//Wait for single keystroke, requires <conio.h>
-		{
-			for (int key = 8; key <= 255; key++)
-			{
-
-				if (GetAsyncKeyState(key) == -32767 && flags[key] == false)		//If the key is pressed down and hasn't been flagged
-				{
-					flags[key] = true;
-					actions.push_back(delay);
-					actions.push_back(key);
-					cout << delay << "\t" << key << endl;
-
-				}
-				else if (GetAsyncKeyState(key) == 0 && flags[key] == true)		//If the key is released after being flagged 
-				{
-					actions.push_back(delay);
-					actions.push_back(key + 1000);
-					flags[key] = false;
-					cout << delay << "\t" << key + 1000 << endl;
-				}
-			}
-		}
-	}
-	else
-		exit;
 }
 
 void EditMacro::pause();
