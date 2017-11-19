@@ -6,10 +6,10 @@
 class RecordMacro : public Macro
 {
 	public:
-		RecordMacro(string);
-		void recordMacro(int);
+		RecordMacro(wstring name);
+		void recordMacro(bool noMouse, bool noKey);
 		void saveMacro();
-		void mousePos();
+		void mousePos(bool tic, bool noKey, bool noMouse, vector <int> actions, int& index);
 };
 
 #endif
