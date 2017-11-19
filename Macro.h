@@ -17,6 +17,8 @@ class Macro
 {
 	protected:
 		vector<int> actions;
+		vector<long> mousex;
+		vector<long> mousey;
 		string macro_name;
 		vector<MousePos> mActions;
 
