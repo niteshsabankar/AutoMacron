@@ -10,8 +10,6 @@ class RecordMacro : public Macro
 		void recordMacro(int);
 		void saveMacro();
 		void mousePos();
-		void pause();
-		void resume();
 };
 
 #endif
