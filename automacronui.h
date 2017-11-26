@@ -3,6 +3,20 @@
 
 #include <QMainWindow>
 #include <windows.h>
+#include "Macro.h"
+#include "EditMacro.h"
+#include "PlaybackMacro.h"
+#include "RecordMacro.h"
+#include <string>
+#include <cstdio>
+#include <iostream>
+#include <qfiledialog.h>
+#include <QShortcut>
+#include <QStringListModel>
+#include <QFuture>
+#include <QtConcurrent/QtConcurrent>
+#include <QListView>
+#include <QInputDialog>
 
 namespace Ui {
 class AutoMacronUI;
@@ -49,7 +63,23 @@ private slots:
 
     void on_PBXtimes_clicked();
 
+    void set_lists(QListView*, QListView* , vector<string>, vector<string>, vector<string>);
+
     void on_LoopPB_clicked();
+
+    void on_KeyboardListEditW_pressed(const QModelIndex &index);
+
+    void on_KeyboardListEditW_customContextMenuRequested(const QPoint &pos);
+
+    void on_RWDEdit_toggled(bool checked);
+
+    void on_RMPEdit_toggled(bool checked);
+
+    void ibef_triggered(bool);
+
+    void iaft_triggered(bool);
+
+    void cdel_triggered(bool);
 
 private:
     Ui::AutoMacronUI *ui;
