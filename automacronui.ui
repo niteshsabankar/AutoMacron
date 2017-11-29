@@ -15,6 +15,9 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QTabWidget" name="Tabs">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -193,6 +196,9 @@
       <property name="toolTipDuration">
        <number>1</number>
       </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
      </widget>
      <widget class="QLabel" name="label">
       <property name="geometry">
@@ -230,6 +236,9 @@
       </property>
       <property name="toolTipDuration">
        <number>1</number>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
       </property>
      </widget>
      <widget class="QLabel" name="label_2">
@@ -310,6 +319,9 @@
      </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
+     <property name="contextMenuPolicy">
+      <enum>Qt::ActionsContextMenu</enum>
+     </property>
      <attribute name="title">
       <string>Edit</string>
      </attribute>
@@ -351,6 +363,15 @@
         <height>201</height>
        </rect>
       </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>false</bool>
+      </property>
       <property name="uniformItemSizes">
        <bool>true</bool>
       </property>
@@ -369,6 +390,12 @@
         <width>111</width>
         <height>201</height>
        </rect>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
       </property>
       <property name="alternatingRowColors">
        <bool>true</bool>
@@ -489,6 +516,19 @@
        <bool>true</bool>
       </property>
      </widget>
+     <widget class="QLabel" name="label_11">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>240</y>
+        <width>311</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Right-click individual elements in keyboard to insert/remove them</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_3">
      <attribute name="title">
@@ -514,7 +554,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>50</y>
+        <y>90</y>
         <width>111</width>
         <height>31</height>
        </rect>
@@ -530,7 +570,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>90</y>
+        <y>150</y>
         <width>111</width>
         <height>31</height>
        </rect>
@@ -539,110 +579,20 @@
        <string>Playback Multiple</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="NumberOfLoops">
+     <widget class="QLabel" name="timesLabel">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>95</y>
-        <width>113</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="clearButtonEnabled">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_7">
-      <property name="geometry">
-       <rect>
-        <x>246</x>
-        <y>92</y>
-        <width>51</width>
+        <x>60</x>
+        <y>190</y>
+        <width>41</width>
         <height>31</height>
        </rect>
       </property>
       <property name="text">
        <string>times</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="StopPB">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>130</x>
-        <y>50</y>
-        <width>181</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Playback Stop(Scroll Lock/Pg Up)</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="LoopPB">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>130</y>
-        <width>131</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Playback Until Stopped</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="SpeedInputPB">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>170</y>
-        <width>41</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="clearButtonEnabled">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_8">
-      <property name="geometry">
-       <rect>
-        <x>140</x>
-        <y>170</y>
-        <width>41</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>x</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_3">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>170</y>
-        <width>81</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Playback Speed</string>
       </property>
      </widget>
      <widget class="QListView" name="KeyboardListPB">
@@ -652,10 +602,16 @@
       <property name="geometry">
        <rect>
         <x>150</x>
-        <y>140</y>
+        <y>40</y>
         <width>111</width>
-        <height>111</height>
+        <height>211</height>
        </rect>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
       </property>
       <property name="uniformItemSizes">
        <bool>true</bool>
@@ -671,10 +627,13 @@
       <property name="geometry">
        <rect>
         <x>270</x>
-        <y>140</y>
+        <y>40</y>
         <width>111</width>
-        <height>111</height>
+        <height>211</height>
        </rect>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
       </property>
       <property name="alternatingRowColors">
        <bool>true</bool>
@@ -687,7 +646,7 @@
       <property name="geometry">
        <rect>
         <x>180</x>
-        <y>120</y>
+        <y>20</y>
         <width>47</width>
         <height>13</height>
        </rect>
@@ -700,13 +659,87 @@
       <property name="geometry">
        <rect>
         <x>310</x>
-        <y>120</y>
+        <y>20</y>
         <width>47</width>
         <height>13</height>
        </rect>
       </property>
       <property name="text">
        <string>Mouse</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="delabel">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string/>
+      </property>
+      <property name="text">
+       <string>Delay(ms)</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="delayBox">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>51</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="maximum">
+       <number>10000</number>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="NumberOfLoops">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>190</y>
+        <width>42</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_7">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>45</y>
+        <width>71</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Delay before</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_10">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>60</y>
+        <width>81</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>playback starts</string>
       </property>
      </widget>
     </widget>
@@ -730,32 +763,6 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>File</string>
-    </property>
-    <addaction name="actionRecord_New"/>
-    <addaction name="actionEdit_New"/>
-    <addaction name="actionOpen_in_Edit"/>
-    <addaction name="actionOpen_in_Playback"/>
-    <addaction name="separator"/>
-    <addaction name="actionExit"/>
-   </widget>
-   <widget class="QMenu" name="menuOptions">
-    <property name="title">
-     <string>Options</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menuHelp">
-    <property name="title">
-     <string>Help</string>
-    </property>
-    <addaction name="actionInstructions"/>
-    <addaction name="actionAbout"/>
-   </widget>
-   <addaction name="menuFile"/>
-   <addaction name="menuOptions"/>
-   <addaction name="menuHelp"/>
   </widget>
   <action name="actionFile">
    <property name="text">
