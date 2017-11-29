@@ -88,6 +88,6 @@ private slots:
 
 private:
     Ui::AutoMacronUI *ui;
-};
+    };
 
 #endif // AUTOMACRONUI_H
