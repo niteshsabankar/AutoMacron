@@ -30,6 +30,9 @@ public:
     explicit AutoMacronUI(QWidget *parent = 0);
     ~AutoMacronUI();
 
+    void set_lists(QListView*, QListView* , vector<string>, vector<string>, vector<string>);
+
+
 private slots:
     void on_RecordNew_clicked();
 
@@ -59,13 +62,7 @@ private slots:
 
     void on_StartPB_clicked();
 
-    void on_StopPB_clicked();
-
-    void on_PBXtimes_clicked();
-
-    void set_lists(QListView*, QListView* , vector<string>, vector<string>, vector<string>);
-
-    void on_LoopPB_clicked();
+    //void on_PBXtimes_clicked();
 
     void on_KeyboardListEditW_pressed(const QModelIndex &index);
 
@@ -80,6 +77,14 @@ private slots:
     void iaft_triggered(bool);
 
     void cdel_triggered(bool);
+
+    void activateUI();
+
+    void rema_triggered(bool);
+
+    void on_delayBox_valueChanged(int arg1);
+
+    void on_NumberOfLoops_valueChanged(int arg1);
 
 private:
     Ui::AutoMacronUI *ui;
