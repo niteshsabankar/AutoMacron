@@ -21,5 +21,5 @@ void editInterface(wstring);
 void playbackInterface(wstring);
 void recordInterface(wstring);
 
-#endif 
+#endif
 
