@@ -13,7 +13,7 @@ vector<string> Macro::displayMacro()
    string word;
    ifstream file;
 
-   file.open("C:\\Users\\Jonathan\\Dropbox\\AutoMacronQT\\AutoMacron\\keys.txt");
+   file.open("\\macros\\keys.txt");
    if(!file.is_open())
        exit(0);
    while(file >> word)
