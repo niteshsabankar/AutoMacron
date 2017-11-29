@@ -2,14 +2,19 @@
 #define RECORDMACRO_H
 
 #include "Macro.h"
+#include <time.h>
+#include <windows.h>
+
 
 class RecordMacro : public Macro
 {
-	public:
-		RecordMacro(string name);
-		void recordMacro(bool noMouse, bool noKey);
-		void saveMacro();
-		void mousePos(bool tic, bool noKey, bool noMouse, vector <int> actions, int& index);
+    public:
+        RecordMacro();
+        RecordMacro(string name);
+        void recordMacro(bool, bool, int);
+        void saveMacro(string);
+        void mousePos(bool, bool, bool, int&, long&);
 };
 
-#endif
+#endif // RECORDMACRO_H
+
