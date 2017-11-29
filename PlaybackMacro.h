@@ -7,7 +7,6 @@
 #ifndef PLAYBACKMACRO_H
 #define PLAYBACKMACRO_H
 
-//--------Globally setting up the aliases------------------
 #include <fstream> //All includes will be in the macro.h
 #include <iostream>
 #include <string>
@@ -15,36 +14,23 @@
 #include <Windows.h>
 #include <vector>
 #include <time.h>
+#include "macro.h"
 
 using namespace std;
 
-class PlaybackMacro
+class PlaybackMacro : public Macro
 {
-private:
-	vector<int> actions; //These will be in the marco.h
-	vector<long> mouseX;
-	vector<long> mouseY;
 
 public:     //prototypes to be used by client
 
-	PlaybackMacro(wstring);         //Constructor
+    PlaybackMacro();         //Constructor
 
-	//PURPOSE: Loads file contexts into vector
-	//PARAMETER: Wstring tpye is the name of the file
-	void loadMacro(wstring);
+    //PURPOSE: Loads file contexts into vector
+    //PARAMETER: Wstring tpye is the name of the file
+    void loadMacro(string);
 
-	//PURPOSE: Plays vector context
-	void actionLoop();
-
-	//PURPOSE: Play a key event
-	//PARAMETER: One int type - the index of the vector
-	void actionKey(int, int&);
-
-	//PURPOSE: Play a mouse event
-	//PARAMETER: One int type - the index of the vector
-	void actionMouse(int, int&);
-
-	
+    //PURPOSE: Plays vector context
+    void actionLoop(int&, int, int);
 };
 
-#endif // !PLAYBACKMACRO_H
+#endif // PLAYBACKMACRO_H
