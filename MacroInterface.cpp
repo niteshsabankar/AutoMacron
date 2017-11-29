@@ -64,7 +64,7 @@ void baseInterface()
 				recordInterface(mac_name);
 				break;
 
-			case 2:
+				case 2:
 
 				for (int i = 0; i < 9; i++)
 					cout << "\n";
