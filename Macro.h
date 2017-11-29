@@ -4,32 +4,29 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-
 using namespace std;
 
-struct MousePos 
-{
-	POINT position; 
-	int mdelay;
-};
 //base macro class to be used by the others.
 class Macro
 {
-	protected:
-		vector<int> actions;
-		vector<long> mousex;
-		vector<long> mousey;
-		string macro_name;
-		vector<MousePos> mActions;
+    protected:
+        vector<int> actions;
+        vector<long> mouseX;
+        vector<long> mouseY;
 
-	public:
-		void displayMacro();
-		void setName(string);
-		string getName();
-		Macro();
-		Macro(string);
+    public:
+        vector<string> displayMacro();
+        vector<string> mouseInfo(char);
+        int actionSize();
+        int lastAction();
+        void setName(string);
+        void clear();
+        int mouseSize();
+        int longestDelay();
+        int matchDelay(int&);
+        string getName();
+        int getDelayAt(int);
+        Macro();
 };
 
-
-
-#endif
+#endif // MACRO_H
