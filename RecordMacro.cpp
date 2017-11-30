@@ -34,6 +34,7 @@ for (int i = 0; i < 255; i++)	//Set all flags to false
                     if (tic == false)	//flag is set ignore
                     {
                         mousePos(tic, delays, positions, index, mdelay);
+                        tic = true;
                     }
                     else {}			//Already checked this tic
                 }
@@ -68,7 +69,7 @@ for (int i = 0; i < 255; i++)	//Set all flags to false
                 actions.push_back(delay);
                 actions.push_back(key);
 
-                if (key == 1  && !delays)               //If Left Click or Right Click are the input and no delays are wanted
+                if (key < 3  && key > 0 && !delays)               //If Left Click or Right Click are the input and no delays are wanted
                 {
                     mousePos(tic, delays, positions, index, mdelay);
                 }
