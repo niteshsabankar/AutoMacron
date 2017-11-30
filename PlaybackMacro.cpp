@@ -81,6 +81,7 @@ void PlaybackMacro::actionLoop(int& wait, int loops, int clean)
 {
 
     INPUT key;
+    bool mouse;
     int start,
         numLoops = loops,
         total,
@@ -92,7 +93,7 @@ void PlaybackMacro::actionLoop(int& wait, int loops, int clean)
         mouseIndex = 2,
         keyHolder = 0;
 
-    key.type = INPUT_KEYBOARD;
+
     key.ki.wScan = 0;
     key.ki.time = 0;
     key.ki.dwExtraInfo = 0;
@@ -100,8 +101,8 @@ void PlaybackMacro::actionLoop(int& wait, int loops, int clean)
 
     total = longestDelay() + 5;
     ::Sleep(wait);
-    while(numLoops > 0)
-    {
+    //while(numLoops > 0)
+    //{
         actionIndex = 0;
         mouseIndex = 2;
         keyHolder = 0;
@@ -124,10 +125,10 @@ void PlaybackMacro::actionLoop(int& wait, int loops, int clean)
                 {
                     if((int)clock() == next && mouseIndex < mouseX.size())
                     {
-                    SetCursorPos(mouseX[mouseIndex], mouseY[mouseIndex]);
-                    mouseIndex++;
-                    next = (int)clock() + mouseX[mouseIndex];
-                    mouseIndex++;
+                        SetCursorPos(mouseX[mouseIndex], mouseY[mouseIndex]);
+                        mouseIndex++;
+                        next = (int)clock() + mouseX[mouseIndex];
+                        mouseIndex++;
                     }
                 }
             actionIndex++;
@@ -135,21 +136,53 @@ void PlaybackMacro::actionLoop(int& wait, int loops, int clean)
             else
             {
                 keyHolder = actions[actionIndex];
-                if(actions[actionIndex] >= 1000)
-                {
-                    keyHolder -= 1000;
-                    key.ki.wVk = keyHolder;
-                    key.ki.dwFlags = KEYEVENTF_KEYUP;
-                    actionIndex++;
-                }
-                else
-                {
-                    key.ki.wVk = keyHolder;
-                    key.ki.dwFlags = 0;
-                    actionIndex++;
-                }
+                if(keyHolder < 3)
+                    mouse = true;
+                if(keyHolder == 1001 || keyHolder == 1002)
+                    mouse = true;
 
-            SendInput(1, &key, sizeof(INPUT));
+
+                if(mouse)
+                {
+
+
+                    key.type = INPUT_MOUSE;
+                    if(keyHolder == 1)
+                        key.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
+
+                    if(keyHolder == 1001)
+                        key.mi.dwFlags = MOUSEEVENTF_LEFTUP;
+
+                    if(keyHolder == 2)
+                        key.mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
+
+                    if(keyHolder == 1002)
+                        key.mi.dwFlags = MOUSEEVENTF_RIGHTUP;
+                    actionIndex++;
+                }
+               else
+                {
+                    key.type = INPUT_KEYBOARD;
+                    if(actions[actionIndex] >= 1000)
+                    {
+
+                         keyHolder -= 1000;
+                         key.ki.wVk = keyHolder;
+                         key.ki.dwFlags = KEYEVENTF_KEYUP;
+                         actionIndex++;
+                    }
+                    else
+                    {
+                        key.ki.wVk = keyHolder;
+                        key.ki.dwFlags = 0;
+                        actionIndex++;
+                    }
+                }
+                mouse = false;
+                SendInput(1, &key, sizeof(INPUT));
+          }
+
+
 
             if((int)clock() == next && mouseIndex < mouseX.size())
             {
@@ -160,10 +193,9 @@ void PlaybackMacro::actionLoop(int& wait, int loops, int clean)
             }
 
         }
-     }
-     numLoops--;
-   }
-    return;
-
+     //}
+     //numLoops--;
+        return;
 }
+
 
