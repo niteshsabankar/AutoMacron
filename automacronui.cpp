@@ -74,10 +74,10 @@ void AutoMacronUI::on_EndRecordRecW_clicked()
 {
     myThread->waitForFinished();
 
-    delete myThread;
+    //delete myThread;
     delete scrolls;
     delete pgup;
-    myThread = NULL;
+    //myThread = NULL;
     scrolls = NULL;
     pgup = NULL;
 
@@ -333,6 +333,7 @@ void AutoMacronUI::on_LoadMacroEditW_clicked()
         ui->RecordMacroEditW->setEnabled(true);
         ui->KeyboardListEditW->setEnabled(true);
         ui->MouseListEditW->setEnabled(true);
+        ui->LoadMacroEditW->setEnabled(false);
         ui->DiscardEditW->setEnabled(true);
         vector<string> keys, moux, mouy;
         keys = edit->displayMacro();
@@ -392,9 +393,6 @@ void AutoMacronUI::on_LoadMacroPB_clicked()
 
     }
 }
-
-
-
 
 void AutoMacronUI::on_StartPB_clicked()
 {    
